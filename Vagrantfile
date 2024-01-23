@@ -1,15 +1,23 @@
 Vagrant.configure("2") do |config|
+
   config.vm.provision "shell", path: "script.sh"
+  
   config.vm.define "controle" do |controle|
     controle.vm.box = "shekeriev/debian-11"
     controle.vm.hostname = "controle"
     controle.vm.network "private_network", ip: "172.17.177.100"
-    controle.vm.provision "shell", inline: "apt install git -y"
-    controle.vm.provider "virtualbox" do |vb|
+    #controle.vm.provision "shell", inline: "apt install git -y"
+    controle.vm.provision "ansible_local" do |ansible|
+      ansible.playbook = "playbook.yml"
+      ansible.install_mode = "pip"
+    end
+    
+      controle.vm.provider "virtualbox" do |vb|
       vb.name = "controle"
       vb.memory = "2048"
       vb.cpus = 2
     end
+    
   end
 
   config.vm.define "web" do |web|
