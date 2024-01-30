@@ -1,3 +1,4 @@
+---
 - hosts: db
   become: yes
   tasks:
@@ -38,15 +39,18 @@
         password: 'AllSafe0!'
         priv: 'backup.*:ALL'
         state: present
+        column_case_sensitive: false
     - name: 'Substituir bind do mysql'
       replace:
         path: /etc/mysql/mariadb.conf.d/50-server.cnf
         regexp: '127\.0\.0\.1'
         replace: '0.0.0.0'
       notify: Restart Mysql
+
   handlers:
     - name: Restart Mysql
       service:
-        name: mysql       
+        name: mysql
         state: restarted
         enabled: yes
+

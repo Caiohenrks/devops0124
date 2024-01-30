@@ -7,11 +7,16 @@ Vagrant.configure("2") do |config|
     controle.vm.hostname = "controle"
     controle.vm.network "private_network", ip: "172.17.177.100"
     #controle.vm.provision "shell", inline: "apt install git -y"
+    
     controle.vm.provision "ansible_local" do |ansible|
       ansible.playbook = "playbook.yml"
       ansible.install_mode = "pip"
-    end
+    end 
     
+    controle.vm.provision "ansible_local" do |ansible|
+      ansible.playbook = "installdocker.yml"
+      ansible.install_mode = "pip"
+    end
       controle.vm.provider "virtualbox" do |vb|
       vb.name = "controle"
       vb.memory = "2048"

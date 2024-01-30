@@ -1,3 +1,4 @@
+---
 - hosts: web
   become: yes
   vars_files:
@@ -5,7 +6,7 @@
   gather_facts: true
   tasks:
     - name: 'Instalação de pacotes webserver'
-      become: true
+      become: yes
       apt:
         pkg:
           - php7.4
@@ -24,7 +25,7 @@
         state: present
       when: ansible_os_family == 'Debian'
     - name: 'Diretorio do webserver'
-      become: true
+      become: yes
       file:
         path: /srv/www
         state: directory
@@ -58,6 +59,18 @@
       notify: Reload Apache
     - name: 'Habilitar Arquivo de configuração express'
       shell: /usr/sbin/a2enconf direxpress.conf
+      notify: Reload Apache
+    - name: 'Habilitar Modulo php7'
+      apache2_module:
+        state: present
+        name: php7.4
+      notify: Reload Apache
+    - name: 'Habilitar Modulo Virtual Host'
+      apache2_module:
+        state: present
+        name: vhost_alias
+      notify: Reload Apache
+
   handlers:
     - name: Reload Apache
       service:
@@ -71,3 +84,4 @@
       service:
         name: apache2
         state: started
+
