@@ -17,10 +17,14 @@ Vagrant.configure("2") do |config|
       ansible.playbook = "installdocker.yml"
       ansible.install_mode = "pip"
     end
+    controle.vm.provision "ansible_local" do |ansible|
+      ansible.playbook = "installjenkins.yml"
+      ansible.install_mode = "pip"
+    end
       controle.vm.provider "virtualbox" do |vb|
       vb.name = "controle"
-      vb.memory = "2048"
-      vb.cpus = 2
+      vb.memory = "4096"
+      vb.cpus = 4
     end
     
   end
@@ -33,6 +37,15 @@ Vagrant.configure("2") do |config|
       vb.name = "web"
       vb.memory = "512"
       vb.cpus = 2
+    end
+    web.vm.provision "ansible_local" do |ansible|
+      ansible.playbook = "playbook.yml"
+      ansible.install_mode = "pip"
+    end 
+    
+    web.vm.provision "ansible_local" do |ansible|
+      ansible.playbook = "installdocker.yml"
+      ansible.install_mode = "pip"
     end
   end
 
