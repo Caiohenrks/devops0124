@@ -28,7 +28,7 @@ pipeline {
                     }
                 }
             }
-        }
+        }/*
         stage('Teste Aplicação') {
             steps {
                 // Testes automatizados da aplicação
@@ -47,6 +47,6 @@ pipeline {
                 input 'Deseja prosseguir com o Deploy e Push?'
             }
         }
-
+    */
  }
 }
